@@ -12,8 +12,8 @@ jQuery( document ).ready(function() {
 
 	} );
 
-	$( "#mnm_product_data .mnm_use_category_field input" ).first().change();
-      
+	$( "#mnm_product_data input.mnm_use_category:checked" ).change();
+
 } );
 
 
