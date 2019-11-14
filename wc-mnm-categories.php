@@ -90,7 +90,13 @@ class WC_MNM_Categories {
 		 * Product.
 		 */
 		add_filter( 'woocommerce_product_get_contents', array( __CLASS__, 'get_category_contents' ), 10, 2 );
-
+	
+		/*
+		 * Display.
+		 */
+		add_action( 'woocommerce_before_mnm_items', array( __CLASS__, 'first_category_caption' ), -10 );
+		add_action( 'woocommerce_mnm_child_item_details', array( __CLASS__, 'change_category_caption' ), -10, 2 );
+		
 	}
 
 
@@ -208,7 +214,8 @@ class WC_MNM_Categories {
 		}
 
 		if( isset( $_POST[ 'mnm_product_cat' ] ) ) {
-			$product->update_meta_data( '_mnm_product_cat', intval( $_POST[ 'mnm_product_cat' ] ) );
+			$meta = array_map( 'sanitize_title',  $_POST[ 'mnm_product_cat' ] );
+			$product->update_meta_data( '_mnm_product_cat', $meta );
 		} else {
 			$product->delete_meta_data( '_mnm_product_cat' );
 		}
@@ -223,27 +230,144 @@ class WC_MNM_Categories {
 	 * Get the product IDs from a product category
 	 *
 	 * @param  array $contents an array of product IDs
-	 * @param  obj WC_Product_Mix_and_Match
+	 * @param  obj $container_product WC_Product_Mix_and_Match
 	 * @return array 
 	 */
-	public static function get_category_contents( $contents, $product ) {
+	public static function get_category_contents( $contents, $container_product ) {
 
-		if( ! is_admin() && $product->get_meta( '_mnm_use_category' ) == 'yes' && $product->get_meta( '_mnm_product_cat' ) ) {
+		if( ! is_admin() && self::use_categories( $container_product ) ) {
 
-			$term = get_term_by( 'id', $product->get_meta( '_mnm_product_cat' ), 'product_cat' );
+			$categories = self::get_categories( $container_product );
 
-			if( ! is_wp_error( $term ) ) {
+			// Short circuit the contents as we'll get products instead later.
+			if( count( $categories ) > 1 ) {
+				$contents = array();
+				add_filter( 'woocommerce_mnm_get_children', array( __CLASS__, 'get_category_children' ), 10, 2 );
 
-				$args = array( 'type' => 'simple', 'category' => array( $term->slug ), 'return' => 'ids' );
-				$contents = wc_get_products( $args );
+			} else if( count( $categories ) === 1 ) {
 
-				// Currently contents array is ID => some data... so flip the results.
-				$contents = array_flip( $contents );
+				$term_id = array_shift( $categories );
+
+				$term = get_term_by( 'id', $term_id, 'product_cat' );
+
+				if( $term && ! is_wp_error( $term ) ) {
+
+					$args = array( 'type' => 'simple', 'category' => array( $term->slug ), 'return' => 'ids', 'limit' => -1 );
+					$cat_contents = wc_get_products( $args );
+
+					// Currently contents array is ID => some data... so flip the results.
+					$contents = array_flip( $cat_contents );
+
+				}
+
 			}
 
 		}
 
 		return $contents;
+
+	}
+
+	/**
+	 * Get the product IDs from a product category
+	 *
+	 * @param  array $children an array of products
+	 * @param  obj $container_product WC_Product_Mix_and_Match
+	 * @return array 
+	 */
+	public static function get_category_children( $children, $container_product ) {
+
+		if( ! is_admin() && self::use_categories( $container_product ) ) {
+
+			$new_children = array();
+
+			foreach( self::get_categories( $container_product ) as $cat_slug ) {
+
+				//add_filter( 'woocommerce_mnm_get_child', array( __CLASS__, 'add_category_property' ), 10, 2 );
+
+				$args = array( 'type' => WC_Mix_and_Match_Helpers::get_supported_product_types(), 'category' => array( $cat_slug ), 'return' => 'ids' );
+				$cat_contents = wc_get_products( $args );
+
+				foreach ( $cat_contents as $mnm_item_id ) {
+
+					$child_product = $container_product->get_child( $mnm_item_id );
+					$child_product->mnm_category = $cat_slug;
+
+					$new_children[ $mnm_item_id ] = $child_product;
+					
+				}
+			
+			}
+
+			$children = ! empty( $new_children ) ? $new_children : $children;
+
+		}
+
+		return $children;
+
+	}
+
+
+	/**
+	 * The category caption
+	 *
+	 * @param  obj $container_product WC_Product_Mix_and_Match
+	 */
+	public static function first_category_caption( $container_product ) {
+		if( self::use_categories( $container_product ) ) {
+
+			$categories = self::get_categories( $container_product );
+
+			if( count( $categories ) > 1 ) {
+
+				$category = get_term_by( 'slug', array_shift( $categories ), 'product_cat' );
+
+				if( $category && ! is_wp_error( $category ) ) {
+
+					// Stash the current category.
+					$container_product->current_cat = $category->slug;
+
+					// Don't display the category count.
+					add_filter( 'woocommerce_subcategory_count_html', '__return_null' );
+
+					// Use the existing category title template.
+					woocommerce_template_loop_category_title( $category );
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Insert a category break if the category has changed.
+	 *
+	 * @param  obj $child_product WC_Product
+	 * @param  obj $container_product WC_Product_Mix_and_Match
+	 */
+	public static function change_category_caption( $child_product, $container_product ) {
+
+		if( self::use_categories( $container_product ) ) {
+
+			if( $container_product->current_cat !== $child_product->mnm_category ) {
+				
+				$new_category = get_term_by( 'slug', $child_product->mnm_category, 'product_cat' );
+
+				if( $new_category && ! is_wp_error( $new_category ) ) {
+
+					wc_mnm_template_child_items_wrapper_close( $container_product );
+					woocommerce_template_loop_category_title( $new_category );
+					wc_mnm_template_child_items_wrapper_open( $container_product );
+
+				}
+
+				// Update the current state of the parent container.
+				$container_product->current_cat = $child_product->mnm_category;
+
+			}
+
+		}
 
 	}
 
