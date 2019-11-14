@@ -40,7 +40,7 @@ class WC_MNM_Categories {
 	 *
 	 * @var string
 	 */
-	public static $req_mnm_version = '1.4.0';
+	public static $req_mnm_version = '1.6.0';
 
 	/**
 	 * Plugin URL.
