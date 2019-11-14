@@ -145,13 +145,19 @@ class WC_MNM_Categories {
 	 */
 	public static function additional_container_option( $post_id, $mnm_product_object ) {
 
-		woocommerce_wp_radio( array(
-			'id'            => 'mnm_use_category',
-			'label'       => __( 'Use product category', 'wc-mnm-categories' ),
-			'value'	=> $mnm_product_object->get_meta( '_mnm_use_categories' ) == 'yes' ? 'yes' : 'no',
-			'options'	=> array( 'no' => __( 'Use default', 'wc-mnm-categories' ),
-								  'yes' => __( 'Use Product Category for contents', 'wc-mnm-categories' ) )
-		) );
+		woocommerce_wp_radio( 
+			array(
+				'id'      => 'mnm_use_category',
+				'class'   => 'select short mnm_use_category',
+				'label'   => __( 'Use product category', 'wc-mnm-categories' ),
+				'value'	  => $mnm_product_object->get_meta( '_mnm_use_category' ) === 'yes' ? 'yes' : 'no',
+				'options' => array( 
+					'no'  => __( 'Use default', 'wc-mnm-categories' ),
+					'yes' => __( 'Use Product Categories for contents', 'wc-mnm-categories' )
+				)
+			)
+		);
+
 	}
 
 	/**
@@ -160,24 +166,33 @@ class WC_MNM_Categories {
 	 * @param int $post_id
 	 * @param  WC_Product_Mix_and_Match  $mnm_product_object
 	 */
-	public static function add_container_category_contents_option( $post_id, $mnm_product_object ) {
-		
-		echo '<p class="form-field mnm_product_cat_field">
-		<label for="mnm_product_cat_field">' . __( 'Mix and Match product category', 'wc-mnm-categories' ) . '</label>';
+	public static function add_container_category_contents_option( $post_id, $mnm_product_object ) { ?>
 
-		$args = array(
-			'orderby'            => 'name',
-			'order'              => 'DESC',
-			'taxonomy'           => 'product_cat',
-			'hide_if_empty'      => false,
-			'id' 				 => 'mnm_product_cat',
-			'name' 				 => 'mnm_product_cat',
-			'selected'			 => $mnm_product_object->get_meta( '_mnm_product_cat' )
-		);
+		<p  class="form-field mnm_product_cat_field">
+			<label for="mnm_allowed_contents"><?php _e( 'Mix and Match product categories', 'wc-mnm-categories' ); ?></label>
 
-		wp_dropdown_categories( $args );
+			<?php
 
-		echo '</p>';
+			// Generate some data for the select2 input.
+			$selected_cats = self::get_categories( $mnm_product_object );
+
+			?>
+
+			<select id="mnm_product_cat" class="wc-category-search" name="mnm_product_cat[]" multiple="multiple" style="width: 400px;" data-sortable="sortable" data-placeholder="<?php esc_attr_e( 'Search for a category&hellip;', 'wc-mnm-categories' ); ?>" data-action="woocommerce_json_search_categories" data-allow_clear="true">
+			<?php
+				foreach ( $selected_cats as $slug ) {
+
+					$current_cat      = get_term_by( 'slug', $slug, 'product_cat' );
+
+					if ( $current_cat && ! is_wp_error( $current_cat ) ) {
+						echo '<option value="' . esc_attr( $current_cat->slug ) . '"' . selected( true, true, false ) . '>' . wp_kses_post( $current_cat->name ) . '</option>';
+					}
+				}
+			?>
+			</select>
+		</p>
+
+		<?php
 	}
 
 	/**
@@ -232,6 +247,37 @@ class WC_MNM_Categories {
 
 	}
 
-}
 
+	/*-----------------------------------------------------------------------------------*/
+	/* Helpers */
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Get the contents, ensure they're an array.
+	 *
+	 * @param  WC_Product $product
+	 * @return array
+	 */
+	public static function use_categories( $product ) {
+		return 'yes' ===  $product->get_meta( '_mnm_use_category' ) && ! empty( self::get_categories( $product ) );
+	}
+
+	/**
+	 * Get the contents, ensure they're an array.
+	 *
+	 * @param  WC_Product $product
+	 * @return array
+	 */
+	public static function get_categories( $product ) {
+		$categories = $product->get_meta( '_mnm_product_cat' );
+
+		// Old data was stored as integer, convert to slug.
+		if( is_integer( $categories ) ) {
+			$term = get_term_by( 'id', $categories, 'product_cat' );
+			$categories = $term && ! is_wp_error( $term ) ? $term->slug : array();
+		}
+		return (array) $categories ;
+	}
+
+}
 add_action( 'plugins_loaded', array( 'WC_MNM_Categories', 'init' ) );
