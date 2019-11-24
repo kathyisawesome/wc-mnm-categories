@@ -127,10 +127,12 @@ class WC_MNM_Categories {
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
 		// WooCommerce product admin page.
 		if ( 'product' === $screen_id ) {
 
-			wp_enqueue_script( 'wc_mnm_categories_writepanel', self::plugin_url() . '/assets/js/wc-mnm-categories-metabox.js', array( 'jquery', 'wc-enhanced-select' ), self::$version );
+			wp_enqueue_script( 'wc_mnm_categories_writepanel', self::plugin_url() . '/assets/js/wc-mnm-categories-metabox'  . $suffix . 'js', array( 'jquery', 'wc-enhanced-select' ), self::$version );
 
 		}
 
