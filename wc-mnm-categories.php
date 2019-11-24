@@ -10,11 +10,11 @@
 * Text Domain: wc-mnm-categories
 * Domain Path: /languages/
 *
-* Requires at least: 4.9
-* Tested up to: 5.1
+* Requires at least: 5.1.0
+* Tested up to: 5.3.0
 *
-* WC requires at least: 3.4
-* WC tested up to: 3.4.5
+* WC requires at least: 3.6.0
+* WC tested up to: 3.8.0
 *
 * Copyright: © 2019 Kathy Darling
 * License: GNU General Public License v3.0
