@@ -323,6 +323,9 @@ class WC_MNM_Categories {
 				$category = get_term_by( 'slug', array_shift( $categories ), 'product_cat' );
 
 				if( $category && ! is_wp_error( $category ) ) {
+					
+					echo '<div class="products categories-wrapper">';
+					add_action( 'woocommerce_after_mnm_items', array( __CLASS__, 'close_wrapper' ), 200 );
 
 					// Stash the current category.
 					$container_product->current_cat = $category->slug;
@@ -371,6 +374,14 @@ class WC_MNM_Categories {
 
 	}
 
+	/**
+	 * CLose the wrapping div
+	 *
+	 * @param  obj $container_product WC_Product_Mix_and_Match
+	 */
+	public static function close_wrapper( $container_product ) {
+		echo '</div>';
+	}
 
 	/*-----------------------------------------------------------------------------------*/
 	/* Helpers */
