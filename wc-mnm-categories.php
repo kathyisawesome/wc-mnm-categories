@@ -142,7 +142,7 @@ class WC_MNM_Categories {
 	 * Add a notice if versions not met.
 	 */
 	public static function version_notice() {
-		echo '<div class="error"><p>' . sprintf( __( '<strong>WooCommerce Mix & Match: Categories is inactive.</strong> The %sWooCommerce Mix and Match plugin%s must be active and at least version %s for Categories mini-extension to function. Please upgrade or activate WooCommerce Mix and Match.', 'woocommerce-mix-and-match-products' ), '<a href="https://woocommerce.com/products/woocommerce-mix-and-match-products/">', '</a>', $this->req_mnm_version ) . '</p></div>';
+		echo '<div class="error"><p>' . sprintf( __( '<strong>WooCommerce Mix & Match: Categories is inactive.</strong> The %sWooCommerce Mix and Match plugin%s must be active and at least version %s for Categories mini-extension to function. Please upgrade or activate WooCommerce Mix and Match.', 'wc-mnm-categories' ), '<a href="https://woocommerce.com/products/woocommerce-mix-and-match-products/">', '</a>', $this->req_mnm_version ) . '</p></div>';
 	}
 
 	/**
