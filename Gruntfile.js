@@ -2,7 +2,11 @@
 module.exports = function( grunt ) {
 	'use strict';
 
+	require('load-grunt-tasks')(grunt);
+
 	grunt.initConfig({
+
+		pkg: grunt.file.readJSON('package.json'),
 
 		// setting folder templates
 		dirs: {
@@ -13,6 +17,7 @@ module.exports = function( grunt ) {
 		// JavaScript linting with JSHint.
 		jshint: {
 			options: {
+				'esversion': 6,
 				'force': true,
 				'boss': true,
 				'curly': true,
@@ -81,12 +86,12 @@ module.exports = function( grunt ) {
 				type: 'wp-plugin',
 				domainPath: 'languages',
 				potHeaders: {
-					'report-msgid-bugs-to': 'support@somewherewarm.gr'
+					'report-msgid-bugs-to': 'support@kathyisawesome.com'
 				}
 			},
 			go: {
 				options: {
-					potFilename: 'woocommerce-product-bundles-bulk-discounts.pot',
+					potFilename: '<%= pkg.name %>.pot',
 					exclude: [
 						'languages/.*',
 						'assets/.*',
@@ -100,7 +105,7 @@ module.exports = function( grunt ) {
 		// Check textdomain errors.
 		checktextdomain: {
 			options:{
-				text_domain: 'woocommerce-product-bundles-bulk-discounts',
+				text_domain: '<%= pkg.name %>',
 				keywords: [
 					'__:1,2d',
 					'_e:1,2d',
@@ -127,15 +132,38 @@ module.exports = function( grunt ) {
 				],
 				expand: true
 			}
-		}
-	});
+		},
 
-	// Load NPM tasks to be used here.
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-wp-i18n' );
-	grunt.loadNpmTasks( 'grunt-checktextdomain' );
+		// bump version numbers (replace with version in package.json)
+		replace: {
+			Version: {
+				src: [
+					'readme.txt',
+					'<%= pkg.name %>.php'
+				],
+				overwrite: true,
+				replacements: [
+					{
+						from: /Stable tag:.*$/m,
+						to: "Stable tag: <%= pkg.version %>"
+					},
+					{
+						from: /Version:.*$/m,
+						to: "Version: <%= pkg.version %>"
+					},
+					{
+						from: /public \$version = \'.*.'/m,
+						to: "public $version = '<%= pkg.version %>'"
+					},
+					{
+						from: /public \$version      = \'.*.'/m,
+						to: "public $version      = '<%= pkg.version %>'"
+					}
+				]
+			}
+		}
+
+	});
 
 	// Register tasks.
 	grunt.registerTask( 'dev', [
@@ -143,12 +171,10 @@ module.exports = function( grunt ) {
 		'uglify'
 	]);
 
-	grunt.registerTask( 'default', [
+	grunt.registerTask( 'build', [
+		'replace',
 		'dev',
 		'makepot'
 	]);
 
-	grunt.registerTask( 'domain', [
-		'checktextdomain'
-	]);
 };
