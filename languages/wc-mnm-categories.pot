@@ -1,0 +1,62 @@
+# Copyright (C) 2019 Kathy Darling
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Mix and Match: Categories 1.0.0-beta-4\n"
+"Report-Msgid-Bugs-To: support@kathyisawesome.com\n"
+"POT-Creation-Date: 2019-11-24 22:24:23+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: wc-mnm-categories.php:145
+msgid ""
+"<strong>WooCommerce Mix & Match: Categories is inactive.</strong> The "
+"%sWooCommerce Mix and Match plugin%s must be active and at least version %s "
+"for Categories mini-extension to function. Please upgrade or activate "
+"WooCommerce Mix and Match."
+msgstr ""
+
+#: wc-mnm-categories.php:160
+msgid "Use product category"
+msgstr ""
+
+#: wc-mnm-categories.php:163
+msgid "Use default"
+msgstr ""
+
+#: wc-mnm-categories.php:164
+msgid "Use Product Categories for contents"
+msgstr ""
+
+#: wc-mnm-categories.php:180
+msgid "Mix and Match product categories"
+msgstr ""
+
+#: wc-mnm-categories.php:189
+msgid "Search for a category&hellip;"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce Mix and Match: Categories"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://woocommerce.com/products/woocommerce-mix-and-match-products/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Add products as mix and match options by product category."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Kathy Darling"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://kathyisawesome.com/"
+msgstr ""

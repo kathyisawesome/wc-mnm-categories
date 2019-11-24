@@ -1,12 +1,12 @@
 {
-	"name": "woocommerce-mix-and-match-categories",
+	"name": "wc-mnm-categories",
 	"title": "WooCommerce Mix and Match Products - Categories",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/helgatheviking/wc-mnm-categories.git"
 	},
 	"license": "GPL-3.0-or-later",
-	"version": "1.0.0-beta-1",
+	"version": "1.0.0-beta-4",
 	"homepage": "http://woocommerce.com/products/woocommerce-mix-and-match/",
 	"main": "Gruntfile.js",
 	"devDependencies": {

@@ -2,9 +2,9 @@
 
 Contributors: helgatheviking
 Tags: woocommerce, product, bundle, bundles, kits, simple, categories
-Stable tag: 1.0.0.beta.1
 Requires at least: 5.1.0
 Tested up to: 5.3.0
+Stable tag: 1.0.0-beta-4
 WC requires at least: 3.6.0
 WC tested up to: 3.8.0
 License: GNU General Public License v3.0
