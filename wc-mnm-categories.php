@@ -424,6 +424,8 @@ class WC_MNM_Categories {
 			array( 
 				'type'     => WC_Mix_and_Match_Helpers::get_supported_product_types(),
 				'category' => array( $cat ),
+				'orderby'  => 'title',
+				'order'    => 'ASC',
 				'return'   => 'ids',
 				'limit'    => -1
 			)
