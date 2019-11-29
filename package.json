@@ -6,7 +6,7 @@
 		"url": "https://github.com/helgatheviking/wc-mnm-categories.git"
 	},
 	"license": "GPL-3.0-or-later",
-	"version": "1.0.0-beta-4",
+	"version": "1.0.0-rc-1",
 	"homepage": "http://woocommerce.com/products/woocommerce-mix-and-match/",
 	"main": "Gruntfile.js",
 	"devDependencies": {
