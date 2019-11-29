@@ -253,8 +253,7 @@ class WC_MNM_Categories {
 
 				if( $term && ! is_wp_error( $term ) ) {
 
-					$args = array( 'type' => 'simple', 'category' => array( $term->slug ), 'return' => 'ids', 'limit' => -1 );
-					$cat_contents = wc_get_products( $args );
+					$cat_contents = self::get_cat_contents( $term->slug );
 
 					// Currently contents array is ID => some data... so flip the results.
 					$contents = array_flip( $cat_contents );
@@ -286,8 +285,7 @@ class WC_MNM_Categories {
 
 				//add_filter( 'woocommerce_mnm_get_child', array( __CLASS__, 'add_category_property' ), 10, 2 );
 
-				$args = array( 'type' => WC_Mix_and_Match_Helpers::get_supported_product_types(), 'category' => array( $cat_slug ), 'return' => 'ids' );
-				$cat_contents = wc_get_products( $args );
+				$cat_contents = self::get_cat_contents( $cat_slug );
 
 				foreach ( $cat_contents as $mnm_item_id ) {
 
@@ -415,5 +413,23 @@ class WC_MNM_Categories {
 		return (array) $categories ;
 	}
 
+	/**
+	 * Get the categeory's contents.
+	 *
+	 * @param  string $cat the category slug
+	 * @return array
+	 */
+	public static function get_cat_contents( $cat ) {
+		$args = apply_filters( 'wc_mnm_categories_get_cat_content_args',
+			array( 
+				'type'     => WC_Mix_and_Match_Helpers::get_supported_product_types(),
+				'category' => array( $cat ),
+				'return'   => 'ids',
+				'limit'    => -1
+			)
+		);
+		return wc_get_products( $args );
+
+	}
 }
 add_action( 'plugins_loaded', array( 'WC_MNM_Categories', 'init' ) );
