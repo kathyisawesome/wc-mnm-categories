@@ -30,17 +30,15 @@ class WC_MNM_Categories {
 
 	/**
 	 * Plugin version.
-	 *
-	 * @var string
 	 */
-	public static $version = '1.0.0.beta.3';
+	const VERSION = '1.0.0.beta.3';
 
 	/**
 	 * Min required MNM version.
 	 *
 	 * @var string
 	 */
-	public static $req_mnm_version = '1.6.0';
+	const REQ_MNM_VERSION = '1.6.0';
 
 	/**
 	 * Plugin URL.
@@ -69,7 +67,7 @@ class WC_MNM_Categories {
 		add_action( 'init', array( __CLASS__, 'load_plugin_textdomain' ) );
 
 		// Check dependencies.
-		if ( ! function_exists( 'WC_Mix_and_Match' ) || version_compare( WC_Mix_and_Match()->version, self::$req_mnm_version ) < 0 ) {
+		if ( ! function_exists( 'WC_Mix_and_Match' ) || version_compare( WC_Mix_and_Match()->version, self::REQ_MNM_VERSION ) < 0 ) {
 			add_action( 'admin_notices', array( __CLASS__, 'version_notice' ) );
 			return false;
 		}
@@ -128,7 +126,7 @@ class WC_MNM_Categories {
 		$screen_id = $screen ? $screen->id : '';
 
 		$suffix  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : self::$version;
+		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : self::VERSION;
 
 		// WooCommerce product admin page.
 		if ( 'product' === $screen_id ) {
@@ -143,7 +141,7 @@ class WC_MNM_Categories {
 	 * Add a notice if versions not met.
 	 */
 	public static function version_notice() {
-		echo '<div class="error"><p>' . sprintf( __( '<strong>WooCommerce Mix & Match: Categories is inactive.</strong> The %sWooCommerce Mix and Match plugin%s must be active and at least version %s for Categories mini-extension to function. Please upgrade or activate WooCommerce Mix and Match.', 'wc-mnm-categories' ), '<a href="https://woocommerce.com/products/woocommerce-mix-and-match-products/">', '</a>', $this->req_mnm_version ) . '</p></div>';
+		echo '<div class="error"><p>' . sprintf( __( '<strong>WooCommerce Mix & Match: Categories is inactive.</strong> The %sWooCommerce Mix and Match plugin%s must be active and at least version %s for Categories mini-extension to function. Please upgrade or activate WooCommerce Mix and Match.', 'wc-mnm-categories' ), '<a href="https://woocommerce.com/products/woocommerce-mix-and-match-products/">', '</a>', self::REQ_MNM_VERSION ) . '</p></div>';
 	}
 
 	/**
