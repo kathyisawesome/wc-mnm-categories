@@ -387,17 +387,17 @@ class WC_MNM_Categories {
 	/*-----------------------------------------------------------------------------------*/
 
 	/**
-	 * Get the contents, ensure they're an array.
+	 * Does this product use categories?
 	 *
 	 * @param  WC_Product $product
-	 * @return array
+	 * @return bool
 	 */
 	public static function use_categories( $product ) {
 		return 'yes' ===  $product->get_meta( '_mnm_use_category' ) && ! empty( self::get_categories( $product ) );
 	}
 
 	/**
-	 * Get the contents, ensure they're an array.
+	 * Get the categories, ensure they're an array.
 	 *
 	 * @param  WC_Product $product
 	 * @return array
