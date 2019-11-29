@@ -132,7 +132,7 @@ class WC_MNM_Categories {
 		// WooCommerce product admin page.
 		if ( 'product' === $screen_id ) {
 
-			wp_enqueue_script( 'wc_mnm_categories_writepanel', self::plugin_url() . '/assets/js/wc-mnm-categories-metabox'  . $suffix . 'js', array( 'jquery', 'wc-enhanced-select' ), self::$version );
+			wp_enqueue_script( 'wc_mnm_categories_writepanel', self::plugin_url() . '/assets/js/wc-mnm-categories-metabox'  . $suffix . '.js', array( 'jquery', 'wc-enhanced-select' ), self::$version );
 
 		}
 
