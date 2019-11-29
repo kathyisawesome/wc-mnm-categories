@@ -158,6 +158,10 @@ module.exports = function( grunt ) {
 					{
 						from: /public \$version      = \'.*.'/m,
 						to: "public $version      = '<%= pkg.version %>'"
+					},
+					{
+						from: /const VERSION = \'.*.'/m,
+						to: "const VERSION = '<%= pkg.version %>'"
 					}
 				]
 			}
