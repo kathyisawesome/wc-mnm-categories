@@ -241,7 +241,7 @@ class WC_MNM_Categories {
 			$categories = self::get_categories( $container_product );
 
 			// Short circuit the contents as we'll get products instead later.
-			if( count( $categories ) > 1 ) {
+			if( self::use_multi_cat( $container_product ) ) {
 				$contents = array();
 				add_filter( 'woocommerce_mnm_get_children', array( __CLASS__, 'get_category_children' ), 10, 2 );
 
@@ -313,29 +313,26 @@ class WC_MNM_Categories {
 	 * @param  obj $container_product WC_Product_Mix_and_Match
 	 */
 	public static function first_category_caption( $container_product ) {
-		if( self::use_categories( $container_product ) ) {
+
+		if( self::use_multi_cat( $container_product ) ) {
 
 			$categories = self::get_categories( $container_product );
 
-			if( count( $categories ) > 1 ) {
+			$category = get_term_by( 'slug', array_shift( $categories ), 'product_cat' );
 
-				$category = get_term_by( 'slug', array_shift( $categories ), 'product_cat' );
+			if( $category && ! is_wp_error( $category ) ) {
+				
+				echo '<div class="products categories-wrapper">';
+				add_action( 'woocommerce_after_mnm_items', array( __CLASS__, 'close_wrapper' ), 200 );
 
-				if( $category && ! is_wp_error( $category ) ) {
-					
-					echo '<div class="products categories-wrapper">';
-					add_action( 'woocommerce_after_mnm_items', array( __CLASS__, 'close_wrapper' ), 200 );
+				// Stash the current category.
+				$container_product->current_cat = $category->slug;
 
-					// Stash the current category.
-					$container_product->current_cat = $category->slug;
+				// Don't display the category count.
+				add_filter( 'woocommerce_subcategory_count_html', '__return_null' );
 
-					// Don't display the category count.
-					add_filter( 'woocommerce_subcategory_count_html', '__return_null' );
-
-					// Use the existing category title template.
-					woocommerce_template_loop_category_title( $category );
-				}
-
+				// Use the existing category title template.
+				woocommerce_template_loop_category_title( $category );
 			}
 
 		}
@@ -350,7 +347,7 @@ class WC_MNM_Categories {
 	 */
 	public static function change_category_caption( $child_product, $container_product ) {
 
-		if( self::use_categories( $container_product ) ) {
+		if( self::use_multi_cat( $container_product ) ) {
 
 			if( $container_product->current_cat !== $child_product->mnm_category ) {
 				
@@ -394,6 +391,16 @@ class WC_MNM_Categories {
 	 */
 	public static function use_categories( $product ) {
 		return 'yes' ===  $product->get_meta( '_mnm_use_category' ) && ! empty( self::get_categories( $product ) );
+	}
+
+	/**
+	 * Does this product use multiple categories?
+	 *
+	 * @param  WC_Product $product
+	 * @return bool
+	 */
+	public static function use_multi_cat( $product ) {
+		return 'yes' ===  $product->get_meta( '_mnm_use_category' ) && count( self::get_categories( $product ) ) > 1;
 	}
 
 	/**
