@@ -83,6 +83,7 @@ class WC_MNM_Categories {
 		add_action( 'woocommerce_mnm_product_options', array( __CLASS__, 'additional_container_option') , 15, 2 );
 		add_action( 'woocommerce_mnm_product_options', array( __CLASS__, 'add_container_category_contents_option') , 15, 2 );
 		add_action( 'woocommerce_admin_process_product_object', array( __CLASS__, 'process_meta' ), 20 );
+		add_filter( 'wc_mnm_display_empty_container_error', array( __CLASS__, 'suppress_container_error' ), 10, 2 );
 
 		/*
 		 * Product.
@@ -224,6 +225,22 @@ class WC_MNM_Categories {
 			WC_Admin_Meta_Boxes::add_error( __( 'Please select at least one category to use for this Mix and Match product.', 'wc-mnm-categories' ) );
 		}
 	}
+
+	/**
+	 * Saves the new meta field.
+	 *
+	 * @param  bool $display_error
+	 * @param  WC_Product_Mix_and_Match  $product
+	 * @return  bool
+	 */
+	public static function suppress_container_error( $display_error, $product ) {
+		if( isset( $_POST[ 'mnm_use_category' ] ) && $_POST[ 'mnm_use_category' ] === 'yes' ) {
+			$display_error = false;
+		}
+
+		return $display_error;
+	}
+
 
 
 	/*-----------------------------------------------------------------------------------*/
