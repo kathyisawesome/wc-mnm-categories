@@ -205,7 +205,7 @@ class WC_MNM_Categories {
 	/**
 	 * Saves the new meta field.
 	 *
-	 * @param  WC_Product_Mix_and_Match  $mnm_product_object
+	 * @param  WC_Product_Mix_and_Match  $product
 	 */
 	public static function process_meta( $product ) {
 		if( isset( $_POST[ 'mnm_use_category' ] ) && $_POST[ 'mnm_use_category' ] == 'yes' ) {
@@ -215,10 +215,13 @@ class WC_MNM_Categories {
 		}
 
 		if( isset( $_POST[ 'mnm_product_cat' ] ) ) {
+
 			$meta = array_map( 'sanitize_title',  $_POST[ 'mnm_product_cat' ] );
+
 			$product->update_meta_data( '_mnm_product_cat', $meta );
-		} else {
-			$product->delete_meta_data( '_mnm_product_cat' );
+
+		} elseif ( 'yes' === $product->get_meta( '_mnm_use_category' ) ) {
+			WC_Admin_Meta_Boxes::add_error( __( 'Please select at least one category to use for this Mix and Match product.', 'wc-mnm-categories' ) );
 		}
 	}
 
