@@ -3,7 +3,7 @@
 * Plugin Name: WooCommerce Mix and Match: Categories
 * Plugin URI: https://woocommerce.com/products/woocommerce-mix-and-match-products/
 * Description: Add products as mix and match options by product category.
-* Version: 1.0.0-rc-1
+* Version: 1.0.0-rc-2
 * Author: Kathy Darling
 * Author URI: http://kathyisawesome.com/
 *
@@ -31,7 +31,7 @@ class WC_MNM_Categories {
 	/**
 	 * Plugin version.
 	 */
-	const VERSION = '1.0.0-rc-1';
+	const VERSION = '1.0.0-rc-2';
 
 	/**
 	 * Min required MNM version.
