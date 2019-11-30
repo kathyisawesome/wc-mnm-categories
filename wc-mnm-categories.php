@@ -247,18 +247,19 @@ class WC_MNM_Categories {
 
 			} else if( count( $categories ) === 1 ) {
 
-				$term_id = array_shift( $categories );
+				$term = array_shift( $categories );
 
-				$term = get_term_by( 'id', $term_id, 'product_cat' );
-
-				if( $term && ! is_wp_error( $term ) ) {
-
-					$cat_contents = self::get_cat_contents( $term->slug );
-
-					// Currently contents array is ID => some data... so flip the results.
-					$contents = array_flip( $cat_contents );
-
+				if( is_int( $term ) ) {
+					$term_obj = get_term_by( 'id', $term, 'product_cat' );
+					if( $term_obj && ! is_wp_error( $term_obj ) ) {
+						$term = $term_obj->slug;
+					}
 				}
+
+				$cat_contents = self::get_cat_contents( $term );
+
+				// Currently contents array is ID => some data... so flip the results.
+				$contents = array_flip( $cat_contents );
 
 			}
 
