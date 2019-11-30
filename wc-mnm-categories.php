@@ -209,7 +209,7 @@ class WC_MNM_Categories {
 	 * @param  WC_Product_Mix_and_Match  $product
 	 */
 	public static function process_meta( $product ) {
-		if( isset( $_POST[ 'mnm_use_category' ] ) && $_POST[ 'mnm_use_category' ] == 'yes' ) {
+		if( isset( $_POST[ 'mnm_use_category' ] ) && $_POST[ 'mnm_use_category' ] === 'yes' ) {
 			$product->update_meta_data( '_mnm_use_category', 'yes' );
 		} else {
 			$product->delete_meta_data( '_mnm_use_category' );
