@@ -8,6 +8,7 @@ Experimental mini-extension for [WooCommerce Mix and Match](https://woocommerce.
 
 1. This is provided as is and does not receive priority support.
 2. Will not be performant on categories with large numbers of products.
+3. Please test thoroughly before using in production.
 
 ### Usage
 
