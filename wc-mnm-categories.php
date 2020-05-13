@@ -89,7 +89,7 @@ class WC_MNM_Categories {
 		 * Product.
 		 */
 		add_filter( 'woocommerce_product_get_contents', array( __CLASS__, 'get_category_contents' ), 10, 2 );
-	
+		add_filter( 'woocommerce_mnm_get_children', array( __CLASS__, 'get_category_children' ), 10, 2 );
 		/*
 		 * Display.
 		 */
@@ -248,7 +248,7 @@ class WC_MNM_Categories {
 	/*-----------------------------------------------------------------------------------*/
 
 	/**
-	 * Get the product IDs from a product category
+	 * Ensure the contents prop is empty. We will get the children directly.
 	 *
 	 * @param  array $contents an array of product IDs
 	 * @param  obj $container_product WC_Product_Mix_and_Match
@@ -257,32 +257,7 @@ class WC_MNM_Categories {
 	public static function get_category_contents( $contents, $container_product ) {
 
 		if( ! is_admin() && self::use_categories( $container_product ) ) {
-
-			$categories = self::get_categories( $container_product );
-
-			// Short circuit the contents as we'll get products instead later.
-			if( self::use_multi_cat( $container_product ) ) {
-				$contents = array();
-				add_filter( 'woocommerce_mnm_get_children', array( __CLASS__, 'get_category_children' ), 10, 2 );
-
-			} else if( count( $categories ) === 1 ) {
-
-				$term = array_shift( $categories );
-
-				if( is_int( $term ) ) {
-					$term_obj = get_term_by( 'id', $term, 'product_cat' );
-					if( $term_obj && ! is_wp_error( $term_obj ) ) {
-						$term = $term_obj->slug;
-					}
-				}
-
-				$cat_contents = self::get_cat_contents( $term );
-
-				// Currently contents array is ID => some data... so flip the results.
-				$contents = array_flip( $cat_contents );
-
-			}
-
+			$contents = array();
 		}
 
 		return $contents;
@@ -302,9 +277,9 @@ class WC_MNM_Categories {
 
 			$new_children = array();
 
-			foreach( self::get_categories( $container_product ) as $cat_slug ) {
+			$categories = self::get_categories( $container_product );
 
-				//add_filter( 'woocommerce_mnm_get_child', array( __CLASS__, 'add_category_property' ), 10, 2 );
+			foreach( self::get_categories( $container_product ) as $cat_slug ) {
 
 				$cat_contents = self::get_cat_contents( $cat_slug );
 
@@ -392,7 +367,7 @@ class WC_MNM_Categories {
 	}
 
 	/**
-	 * CLose the wrapping div
+	 * Close the wrapping div
 	 *
 	 * @param  obj $container_product WC_Product_Mix_and_Match
 	 */
