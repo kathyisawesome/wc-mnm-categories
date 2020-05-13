@@ -286,9 +286,13 @@ class WC_MNM_Categories {
 				foreach ( $cat_contents as $mnm_item_id ) {
 
 					$child_product = $container_product->get_child( $mnm_item_id );
+					
 					$child_product->mnm_category = $cat_slug;
 
-					$new_children[ $mnm_item_id ] = $child_product;
+					// Products that show up later in another category, get skipped.
+					if ( ! isset( $new_children[ $mnm_item_id ] ) ) {
+						$new_children[ $mnm_item_id ] = $child_product;
+					}
 					
 				}
 			
