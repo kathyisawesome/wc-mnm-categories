@@ -370,7 +370,7 @@ class WC_MNM_Categories {
 
 		if( self::use_multi_cat( $container_product ) ) {
 
-			if( $container_product->current_cat !== $child_product->mnm_category ) {
+			if( property_exists ( $container_product, 'current_cat' ) && $container_product->current_cat !== $child_product->mnm_category ) {
 				
 				$new_category = get_term_by( 'slug', $child_product->mnm_category, 'product_cat' );
 
