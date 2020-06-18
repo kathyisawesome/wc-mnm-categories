@@ -273,7 +273,7 @@ class WC_MNM_Categories {
 	 */
 	public static function get_category_children( $children, $container_product ) {
 
-		if( ! is_admin() && self::use_categories( $container_product ) ) {
+		if( self::is_frontend_request() && self::use_categories( $container_product ) ) {
 
 			$new_children = array();
 
@@ -439,6 +439,17 @@ class WC_MNM_Categories {
 		);
 		return wc_get_products( $args );
 
+	}
+
+	/**
+	 * Determines if the current request is for the frontend.
+	 *
+	 * The logic in this function is based off WooCommerce::is_request( 'frontend' ).
+	 *
+	 * @return bool True if it's a frontend request, false otherwise.
+	 */
+	public static function is_frontend_request() {
+		return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! WC()->is_rest_api_request();
 	}
 }
 add_action( 'plugins_loaded', array( 'WC_MNM_Categories', 'init' ) );
