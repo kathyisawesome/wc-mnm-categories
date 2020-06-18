@@ -18,3 +18,8 @@ In the "Mix and Match" tab of the Product Data metabox you will now see a "Use P
 2. "Use product categories for contents" - search for and select product categories. Mix and Match will then display all products in those categories as options for the Mix and M atch container product.
 
 ![screenshot of product data meta box](https://user-images.githubusercontent.com/507025/79798240-eeaba680-8315-11ea-95b3-07991394a52e.png)
+
+### Known issues
+
+RC4 fixes an issue with some front-end calls to admin-ajax.php remove the products from the cart. But the issue could still happen if the user is an admin and can switch to the dashboard then return to the cart. The core Mix and Match plugin needs some refactoring to avoid this entirely.
+
