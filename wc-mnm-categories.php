@@ -14,7 +14,7 @@
 * Tested up to: 5.3.0
 *
 * WC requires at least: 3.6.0
-* WC tested up to: 3.8.0
+* WC tested up to: 4.2.0
 *
 * Copyright: © 2019 Kathy Darling
 * License: GNU General Public License v3.0
