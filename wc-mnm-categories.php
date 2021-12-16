@@ -286,11 +286,16 @@ class WC_MNM_Categories {
 				foreach ( $cat_contents as $mnm_item_id ) {
 
 					$child_product = $container_product->get_child( $mnm_item_id );
-					
-					$child_product->mnm_category = $cat_slug;
 
-					// Products that show up later in another category, get skipped.
-					if ( ! isset( $new_children[ $mnm_item_id ] ) ) {
+                    // Products that show up later in another category, get skipped.
+                    if ( $child_product instanceof WC_Product && ! isset( $new_children[ $mnm_item_id ] ) ) {
+
+                        // Stash current category.
+                        $child_product->mnm_category = $cat_slug;
+
+                        // Apply discounts.
+                        $container_product->maybe_apply_discount_to_child( $child_product );
+
 						$new_children[ $mnm_item_id ] = $child_product;
 					}
 					
