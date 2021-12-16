@@ -11,10 +11,10 @@
 * Domain Path: /languages/
 *
 * Requires at least: 5.1.0
-* Tested up to: 5.3.0
+* Tested up to: 5.8.2
 *
-* WC requires at least: 3.6.0
-* WC tested up to: 4.2.0
+* WC requires at least: 5.0
+* WC tested up to: 6.0
 *
 * Copyright: © 2019 Kathy Darling
 * License: GNU General Public License v3.0
