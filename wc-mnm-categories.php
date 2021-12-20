@@ -439,6 +439,7 @@ class WC_MNM_Categories {
 				'orderby'  => 'title',
 				'order'    => 'ASC',
 				'return'   => 'ids',
+				'visibility' => 'visible',
 				'limit'    => -1
 			)
 		);
