@@ -14,7 +14,7 @@ jQuery( document ).ready( function( $ ) {
 
 	$( "#mnm_product_data input.mnm_use_category:checked" ).trigger( 'change' );
 
-	$( '.wc-category-search' ).filter( '.enhanced' ).each( function() {
+	$( ':input.wc-mnm-category-search' ).filter( ':not(.enhanced)' ).each( function() {
 
 		if ( $( this ).data( 'sortable' ) ) {
 			var $select = $(this);
