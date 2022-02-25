@@ -1,25 +1,29 @@
 <?php
-/*
-* Plugin Name: WooCommerce Mix and Match - Categories
-* Plugin URI: https://woocommerce.com/products/woocommerce-mix-and-match-products/
-* Description: Add products as mix and match options by product category.
-* Version: 1.0.0-rc-4
-* Author: Kathy Darling
-* Author URI: http://kathyisawesome.com/
-*
-* Text Domain: wc-mnm-categories
-* Domain Path: /languages/
-*
-* Requires at least: 5.1.0
-* Tested up to: 5.8.2
-*
-* WC requires at least: 5.0
-* WC tested up to: 6.0
-*
-* Copyright: © 2019 Kathy Darling
-* License: GNU General Public License v3.0
-* License URI: http://www.gnu.org/licenses/gpl-3.0.html
-*/
+/**
+ * Plugin Name: WooCommerce Mix and Match - Categories
+ * Plugin URI: https://woocommerce.com/products/woocommerce-mix-and-match-products/
+ * Description: Add products as mix and match options by product category.
+ * Version: 1.0.0-rc-4
+ * Author: Kathy Darling
+ * Author URI: http://kathyisawesome.com/
+ *
+ * Text Domain: wc-mnm-categories
+ * Domain Path: /languages/
+ *
+ * Requires at least: 5.1.0
+ * Tested up to: 5.8.2
+ *
+ * WC requires at least: 5.0
+ * WC tested up to: 6.1
+ * 
+ * GitHub Plugin URI: kathyisawesome/wc-mnm-categories
+ * GitHub Plugin URI: https://github.com/kathyisawesome/wc-mnm-categories
+ * Release Asset: true
+ *
+ * Copyright: © 2019 Kathy Darling
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ */
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

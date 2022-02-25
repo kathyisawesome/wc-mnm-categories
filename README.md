@@ -23,3 +23,6 @@ In the "Mix and Match" tab of the Product Data metabox you will now see a "Use P
 
 RC4 fixes an issue with some front-end calls to admin-ajax.php remove the products from the cart. But the issue could still happen if the user is an admin and can switch to the dashboard then return to the cart. The core Mix and Match plugin needs some refactoring to avoid this entirely.
 
+### Automatic plugin updates
+
+Plugin updates can be enabled by installing the [Git Updater](https://git-updater.com/) plugin.
