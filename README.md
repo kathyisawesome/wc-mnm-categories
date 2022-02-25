@@ -1,5 +1,11 @@
 # WooCommerce Mix and Match - Categories
 
+### Quickstart
+
+This is a developmental repo. Clone this repo and run `npm install && npm run build`   
+OR    
+[Download latest release](https://github.com/kathyisawesome/wc-mnm-categories/releases/latest/download/wc-mnm-categories.zip)    
+
 ### What's This?
 
 Experimental mini-extension for [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products//) that adds products as mix and match options by product category.
