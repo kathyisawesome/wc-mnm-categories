@@ -14,7 +14,7 @@
  * Tested up to: 5.8.2
  *
  * WC requires at least: 5.0
- * WC tested up to: 6.1
+ * WC tested up to: 6.5
  * 
  * GitHub Plugin URI: kathyisawesome/wc-mnm-categories
  * GitHub Plugin URI: https://github.com/kathyisawesome/wc-mnm-categories
