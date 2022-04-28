@@ -89,6 +89,10 @@ class WC_MNM_Categories {
 		add_action( 'woocommerce_admin_process_product_object', array( __CLASS__, 'process_meta' ), 20 );
 		add_filter( 'wc_mnm_display_empty_container_error', array( __CLASS__, 'suppress_container_error' ), 10, 2 );
 
+        // Import/Export.
+        add_filter( 'woocommerce_product_export_meta_value', array( __CLASS__, 'export_meta_data' ), 10, 4 );
+		add_filter( 'woocommerce_product_importer_parsed_data', array( __CLASS__, 'parse_meta_data' ), 10, 2 );
+
 		/*
 		 * Product.
 		 */
@@ -245,7 +249,56 @@ class WC_MNM_Categories {
 		return $display_error;
 	}
 
+	/*-----------------------------------------------------------------------------------*/
+	/* Import/Export */
+	/*-----------------------------------------------------------------------------------*/
 
+
+	/**
+	 * Export categories meta.
+	 *
+	 * @param  mixed         $meta_value
+	 * @param  WC_Meta_Data  $meta
+	 * @param  WC_Product    $product
+	 * @param  array         $row
+	 * @return string        $meta_value
+	 */
+	public static function export_meta_data( $meta_value, $meta, $product, $row ) {
+
+		if ( '_mnm_product_cat' === $meta->key ) {
+			if ( ! empty( $meta_value ) ) {
+				$meta_value = json_encode( $meta_value );
+			}
+		}
+
+		return $meta_value;
+	}
+
+
+	/**
+	 * Parse categories meta.
+	 *
+	 * @param  array                    $parsed_data
+	 * @param  WC_Product_CSV_Importer  $importer
+	 * @return array                    $parsed_data
+	 */
+	public static function parse_meta_data( $parsed_data, $importer ) {
+
+		if ( empty( $parsed_data[ 'meta_data' ] ) ) {
+			return $parsed_data;
+		}
+		
+		foreach ( $parsed_data[ 'meta_data' ] as $meta_data_index => $meta_data ) {
+			if ( '_mnm_product_cat' === $meta_data[ 'key' ] ) {
+				if ( ! empty( $meta_data[ 'value' ] ) ) {
+					$meta_data[ 'value' ]                           = json_decode( $meta_data[ 'value' ] );
+					$parsed_data[ 'meta_data' ][ $meta_data_index ] = $meta_data;
+				}
+			}
+		}
+
+		return $parsed_data;
+	}
 
 	/*-----------------------------------------------------------------------------------*/
 	/* Front End Display */
