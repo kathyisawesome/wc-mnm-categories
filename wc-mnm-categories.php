@@ -71,7 +71,7 @@ class WC_MNM_Categories {
 		add_action( 'init', array( __CLASS__, 'load_plugin_textdomain' ) );
 
 		// Check dependencies.
-		if ( ! function_exists( 'WC_Mix_and_Match' ) || version_compare( WC_Mix_and_Match()->version, self::REQ_MNM_VERSION ) < 0 ) {
+		if ( ! function_exists( 'WC_Mix_and_Match' ) || version_compare( WC_Mix_and_Match()->version, self::REQ_MNM_VERSION, '<' ) ) {
 			add_action( 'admin_notices', array( __CLASS__, 'version_notice' ) );
 			return false;
 		}
